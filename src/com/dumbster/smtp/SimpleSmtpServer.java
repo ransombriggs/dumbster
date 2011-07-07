@@ -147,7 +147,9 @@ public class SimpleSmtpServer implements Runnable {
     stopped = true;
     try {
       // Kick the server accept loop
-      serverSocket.close();
+      if (serverSocket != null) {
+        serverSocket.close();
+      }
     } catch (IOException e) {
       // Ignore
     }
