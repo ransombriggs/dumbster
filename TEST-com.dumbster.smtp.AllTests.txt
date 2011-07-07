@@ -1,0 +1,19 @@
+Testsuite: com.dumbster.smtp.AllTests
+Tests run: 16, Failures: 0, Errors: 0, Time elapsed: 0.821 sec
+
+Testcase: testSend took 0.701 sec
+Testcase: testSendMessageWithCarriageReturn took 0.02 sec
+Testcase: testSendTwoMessagesSameConnection took 0.03 sec
+Testcase: testSendTwoMsgsWithLogin took 0.02 sec
+Testcase: testUnrecognizedCommandConnectState took 0.01 sec
+Testcase: testUnrecognizedCommandGreetState took 0 sec
+Testcase: testUnrecognizedCommandMailState took 0 sec
+Testcase: testUnrecognizedCommandQuitState took 0 sec
+Testcase: testUnrecognizedCommandRcptState took 0 sec
+Testcase: testUnrecognizedCommandDataBodyState took 0 sec
+Testcase: testUnrecognizedCommandDataHdrState took 0 sec
+Testcase: test1 took 0.01 sec
+Testcase: test2 took 0 sec
+Testcase: test3 took 0 sec
+Testcase: test4 took 0 sec
+Testcase: test5 took 0 sec
