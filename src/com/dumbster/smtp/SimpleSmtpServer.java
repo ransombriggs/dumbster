@@ -230,6 +230,10 @@ public class SimpleSmtpServer implements Runnable {
     return receivedMail.iterator();
   }
 
+  public synchronized void resetReceivedEmail() {
+    receivedMail.clear();
+  }
+
   /**
    * Get the number of messages received.
    * @return size of received email list

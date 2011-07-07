@@ -47,6 +47,19 @@ public class SimpleSmtpServerTest extends TestCase {
       server.stop();
   }
 
+  public void testReset() {
+    try {
+      sendMessage(SMTP_PORT, "sender@here.com", "Test", "Test Body", "receiver@there.com");
+    } catch (Exception e) {
+      e.printStackTrace();
+      fail("Unexpected exception: " + e);
+    }
+
+    assertTrue(server.getReceivedEmailSize() == 1);
+    server.resetReceivedEmail();
+    assertTrue(server.getReceivedEmailSize() == 0);
+  }
+    
   public void testSend() {
     try {
       sendMessage(SMTP_PORT, "sender@here.com", "Test", "Test Body", "receiver@there.com");
