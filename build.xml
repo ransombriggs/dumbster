@@ -30,7 +30,7 @@ limitations under the License.
   <property name="libdir" value="lib" />
   <property name="testsrcdir" value="test-src" />
   <property name="testcompiledir" value="${builddir}/test" />
-  <property name="debug" value="" />
+  <property name="debug" value="on" />
 
   <property name="build.compiler" value="modern" />
 
