@@ -78,7 +78,7 @@ limitations under the License.
   </target>
 
   <!-- === Unit test ====================================================== -->
-  <target name="compile-tests" depends="init">
+  <target name="compile-tests" depends="init,compile">
     <javac srcdir="${testsrcdir}" destdir="${testcompiledir}" debug="${debug}">
       <classpath refid="compile.path" />
       <include name="com/dumbster/smtp/" />
