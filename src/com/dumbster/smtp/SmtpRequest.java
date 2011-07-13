@@ -17,6 +17,8 @@
 
 package com.dumbster.smtp;
 
+import java.util.Map;
+
 /**
  * Contains an SMTP client request. Handles state transitions using the following state transition table.
  * <PRE>
@@ -66,6 +68,10 @@ public class SmtpRequest {
    * @return reponse to the request
    */
   public SmtpResponse execute() {
+      return execute(null);
+  }
+
+  public SmtpResponse execute(Map<String, Integer> mocks) {
     SmtpResponse response = null;
     if (action.isStateless()) {
       if (SmtpActionType.EXPN == action || SmtpActionType.VRFY == action) {
@@ -101,12 +107,17 @@ public class SmtpRequest {
           response = new SmtpResponse(503, "Bad sequence of commands: "+action, this.state);
         }
       } else if (SmtpActionType.RCPT == action) {
-        if (SmtpState.RCPT == state) {
-          response = new SmtpResponse(250, "OK", this.state);
+        if (mocks != null && mocks.containsKey(this.params)) {
+          response = new SmtpResponse(mocks.get(this.params), "Mock Failure", this.state);
         } else {
-          response = new SmtpResponse(503, "Bad sequence of commands: "+action, this.state);
+          if (SmtpState.RCPT == state) {
+            response = new SmtpResponse(250, "OK", this.state);
+          } else {
+            response = new SmtpResponse(503, "Bad sequence of commands: "+action, this.state);
+          }
         }
       } else if (SmtpActionType.DATA == action) {
+        
         if (SmtpState.RCPT == state) {
           response = new SmtpResponse(354, "Start mail input; end with <CRLF>.<CRLF>", SmtpState.DATA_HDR);
         } else {

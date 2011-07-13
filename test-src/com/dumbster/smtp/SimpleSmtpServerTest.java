@@ -16,12 +16,10 @@
  */
 package com.dumbster.smtp;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import javax.mail.Session;
-import javax.mail.Message;
-import javax.mail.Transport;
-import javax.mail.MessagingException;
+import javax.mail.*;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.InternetAddress;
 import java.util.Properties;
@@ -59,7 +57,33 @@ public class SimpleSmtpServerTest extends TestCase {
     server.resetReceivedEmail();
     assertTrue(server.getReceivedEmailSize() == 0);
   }
-    
+
+  public void testAddMockFailure() {
+
+    server.setMock("receiver@there.com", 550);
+
+    try {
+      sendMessage(SMTP_PORT, "sender@here.com", "Test", "Test Body", "receiver@there.com");
+      fail("Expected exception");
+    } catch (SendFailedException e) {
+      SendFailedException f = (SendFailedException) e.getNextException();
+      SendFailedException g = (SendFailedException) f.getNextException();
+      assertEquals("550 Mock Failure\n", g.getMessage());
+    } catch (MessagingException e) {
+      fail("Unexpected exception");
+    }
+
+    server.resetMocks();
+
+    try {
+      sendMessage(SMTP_PORT, "sender@here.com", "Test", "Test Body", "receiver@there.com");
+    } catch (Exception e) {
+      e.printStackTrace();
+      fail("Unexpected exception: " + e);
+    }
+
+  }
+     
   public void testSend() {
     try {
       sendMessage(SMTP_PORT, "sender@here.com", "Test", "Test Body", "receiver@there.com");

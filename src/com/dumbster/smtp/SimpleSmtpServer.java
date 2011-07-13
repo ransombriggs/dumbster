@@ -18,9 +18,7 @@ package com.dumbster.smtp;
 
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -61,6 +59,8 @@ public class SimpleSmtpServer implements Runnable {
    * Timeout listening on server socket.
    */
   private static final int TIMEOUT = 500;
+
+  private Map<String, Integer> mocks = new HashMap<String, Integer>();
 
   /**
    * Constructor.
@@ -169,7 +169,7 @@ public class SimpleSmtpServer implements Runnable {
     SmtpRequest smtpRequest = new SmtpRequest(SmtpActionType.CONNECT, "", smtpState);
 
     // Execute the connection request
-    SmtpResponse smtpResponse = smtpRequest.execute();
+    SmtpResponse smtpResponse = smtpRequest.execute(mocks);
 
     // Send initial response
     sendResponse(out, smtpResponse);
@@ -188,7 +188,7 @@ public class SimpleSmtpServer implements Runnable {
       // Create request from client input and current state
       SmtpRequest request = SmtpRequest.createRequest(line, smtpState);
       // Execute request and create response object
-      SmtpResponse response = request.execute();
+      SmtpResponse response = request.execute(mocks);
       // Move to next internal state
       smtpState = response.getNextState();
       // Send reponse to client
@@ -232,6 +232,15 @@ public class SimpleSmtpServer implements Runnable {
 
   public synchronized void resetReceivedEmail() {
     receivedMail.clear();
+  }
+
+  public synchronized void resetMocks() {
+    this.mocks.clear();
+  }
+  
+  public synchronized void setMock(String email, int code) {
+    email = "<" + email + ">";
+    this.mocks.put(email, code);
   }
 
   /**
