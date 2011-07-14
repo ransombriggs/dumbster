@@ -107,7 +107,7 @@ public class SmtpRequest {
           response = new SmtpResponse(503, "Bad sequence of commands: "+action, this.state);
         }
       } else if (SmtpActionType.RCPT == action) {
-        if (mocks != null && mocks.containsKey(this.params)) {
+        if (mocks != null && mocks.containsKey(this.params) && mocks.get(this.params) != null) {
           response = new SmtpResponse(mocks.get(this.params), "Mock Failure", this.state);
         } else {
           if (SmtpState.RCPT == state) {
