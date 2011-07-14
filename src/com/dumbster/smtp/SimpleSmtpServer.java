@@ -238,7 +238,7 @@ public class SimpleSmtpServer implements Runnable {
     this.mocks.clear();
   }
   
-  public synchronized void setMock(String email, int code) {
+  public synchronized void setMock(String email, Integer code) {
     email = "<" + email + ">";
     this.mocks.put(email, code);
   }
